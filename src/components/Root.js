@@ -1,21 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {selectChoice} from '../redux/actions';
-
+import {loadData} from '../redux/actions';
+import Examination from './Examination'
 import './Root.css';
 
 class Root extends Component {
+  componentDidMount () {
+    this.props.loadData()
+  }
+
   render() {
     return (
-      <div className="Root">
-        <header className="Root-header">
-          <h1 className="Root-title">Root Component</h1>
+      <div className="Root container">
+        <header className="Root-header col-12 text-center">
+          <h1 className="Root-title mt-5 mb-3 ">Multiple Choices</h1>
+          <p className="Root-intro">
+            A quiz which is made with React
+          </p>
         </header>
-        <p className="Root-intro">
-          This is start
-        </p>
+        <div className="col-10 mx-auto my-5 bg-danger">
+          <Examination />
+        </div>
         {console.log({props: this.props})}
-        <a href='#' onClick= { () => {this.props.selectChoice(1)} }>Test action </a>
+        <a href='#' onClick= { () => {console.log(this.props)} }>Test action </a>
       </div>
     );
   }
@@ -24,9 +31,9 @@ class Root extends Component {
 
 
 const mapStateToProps = (state) => ({
-  state: state
+  test: state
 })
 
-const mapDispatchToProps = ({ selectChoice })
+const mapDispatchToProps = ({ loadData })
 
 export default connect(mapStateToProps,mapDispatchToProps)(Root)
