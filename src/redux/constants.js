@@ -1,0 +1,1 @@
+export const SELECT_CHOICE = 'SELECT_CHOICE'
