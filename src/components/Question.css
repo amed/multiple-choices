@@ -1,3 +1,6 @@
+.question .question-text-container {
+  height: 5rem
+}
 .question .question-text {
   font-size: 1.2rem
 }

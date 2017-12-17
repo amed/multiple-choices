@@ -5,22 +5,37 @@ import Question from './Question'
 import './Examination.css';
 
 class Examination extends Component {
-  state = { currentQuestionIndex: 1 }
+  constructor(props) {
+    super(props)
+    this.handleAnswerSelect = this.handleAnswerSelect.bind(this)
+  }
+
+  state = {
+    currentQuestionIndex: 1,
+    answers: {}
+  }
 
   startQuiz () {
-    this.selectQuestion(1)
-  }
-  restartQuiz () {
-    this.selectQuestion(1)
+    this.setState({currentQuestionIndex: 1})
   }
 
-  selectQuestion (questionId) {
-    this.setState({currentQuestionIndex: questionId})
+  restartQuiz () {
+    this.setState({currentQuestionIndex: 1, answers: {}})
   }
+
   questionFilter (questionIndex) {
     return this.props.questions.filter( (question) => {
        return question.id === questionIndex
     })[0]
+  }
+
+  handleAnswerSelect (questionId, answerId) {
+    const {answers} = this.state
+    let newAnswers = {...answers, [questionId]: answerId}
+    this.setState({
+      currentQuestionIndex: questionId + 1,
+      answers: newAnswers
+    })
   }
 
   totalQuestionsCount () {
@@ -30,12 +45,13 @@ class Examination extends Component {
   render() {
     const {currentQuestionIndex} = this.state
     return (
-      <div className="Examination container m-auto col-lg-10 col-md-12 no-gutters">
+      <div className="Examination container m-auto col-lg-10 col-sm-12 no-gutters">
         <a href='#' onClick = {() => {this.setState({currentQuestionIndex: 9})}}>Set to 9</a> <br/>
         <a href='#' onClick = {() => {this.setState({currentQuestionIndex: 8})}}>Set to 8</a> <br/>
         <a href='#' onClick = {() => {this.setState({currentQuestionIndex: 1})}}>Set to 1</a> <br/>
-        <a href='#' onClick = {() => {this.setState({currentQuestionIndex: null})}}>Set to null</a>
-        <h2 className="p-3">Examination</h2>
+        <a href='#' onClick = {() => {this.setState({currentQuestionIndex: null})}}>Set to null</a> <br/>
+        <a href='#' onClick={ () => {console.log(this.state)}}> State </a>
+        <h1 className="p-3">Examination</h1>
         {( currentQuestionIndex === null )
           ? ( <Start onClick={() => this.startQuiz()} /> )
           : (currentQuestionIndex <= this.totalQuestionsCount())
@@ -45,7 +61,7 @@ class Examination extends Component {
                   total={this.totalQuestionsCount()} />
                   <Question
                     question = { this.questionFilter(currentQuestionIndex) }
-                    onClick = { () => {this.handleAnswerSelect} } />
+                    onClick = { this.handleAnswerSelect } />
             </div>)
             : ( <End onClick={() => this.restartQuiz()} /> )}
 
@@ -58,9 +74,9 @@ class Examination extends Component {
 
 const Start = ({onClick}) => {
   return (
-    <div>
+    <div className='pt-5'>
       <p className="py-3">If you are ready please click start.</p>
-      <p className="py-3 text-center">
+      <p className="py-5 text-center">
         <a href="#" className="btn btn-lg btn-primary" onClick={ () => {onClick()} }>
           START
         </a>
@@ -89,8 +105,8 @@ const Progess = ({current, total}) => {
 const End = ({onClick}) => {
   return (
     <div>
-      <p className="py-3">Everything is done! Thanks.</p>
-      <p className="py-3 text-center">
+      <p className="py-5">Everything is done! Thanks.</p>
+      <p className="py-5 text-center">
         <a href="#" className="btn btn-lg btn-primary" onClick={ () => {onClick()} }>
           Restart the quiz
         </a>
