@@ -1,5 +1,5 @@
 import { LOAD_DATA, SELECT_CHOICE } from './constants';
-const data = require('./fixtures/data.json');
+const data = require('../fixtures/data.json');
 
 export const selectChoice = (choiceId) => ({
   type: SELECT_CHOICE,

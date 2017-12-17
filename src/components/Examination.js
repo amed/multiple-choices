@@ -24,7 +24,7 @@ class Examination extends Component {
   }
 
   questionFilter (questionIndex) {
-    return this.props.questions.filter( (question) => {
+    return this.props.questions.filter((question) => {
        return question.id === questionIndex
     })[0]
   }
@@ -42,7 +42,7 @@ class Examination extends Component {
     return (this.props.questions.length * 1)
   }
 
-  render() {
+  render () {
     const {currentQuestionIndex} = this.state
     return (
       <div className="Examination container m-auto col-lg-10 col-sm-12 no-gutters">
@@ -63,13 +63,32 @@ class Examination extends Component {
                     question = { this.questionFilter(currentQuestionIndex) }
                     onClick = { this.handleAnswerSelect } />
             </div>)
-            : ( <End onClick={() => this.restartQuiz()} /> )}
+            : ( <End
+                  finalResults={this.finalResults()}
+                  onRestartClick={() => this.restartQuiz()}
+
+
+
+                /> )}
 
 
 
       </div>
     );
   }
+}
+
+const End = ({finalResults, onRestartClick}) => {
+  return (
+    <div>
+      <p className="py-5">Everything is done! Thanks.</p>
+      <p className="py-5 text-center">
+        <a href="#" className="btn btn-lg btn-primary" onClick={ () => {onRestartClick()} }>
+          Restart the quiz
+        </a>
+      </p>
+    </div>
+  )
 }
 
 const Start = ({onClick}) => {
@@ -102,18 +121,6 @@ const Progess = ({current, total}) => {
   )
 }
 
-const End = ({onClick}) => {
-  return (
-    <div>
-      <p className="py-5">Everything is done! Thanks.</p>
-      <p className="py-5 text-center">
-        <a href="#" className="btn btn-lg btn-primary" onClick={ () => {onClick()} }>
-          Restart the quiz
-        </a>
-      </p>
-    </div>
-  )
-}
 
 const mapStateToProps = (state) => ({
   questions: state.questions
