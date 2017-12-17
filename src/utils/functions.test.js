@@ -25,7 +25,7 @@ const expectedStructure = {
        { id: 2,
          question: 'Libero nam dui proin leo odio porttitor id consequat in consequat?',
          answers: ['Answer#1', 'Answer#2', 'Answer#3'],
-         correct_answer_id: 3,
+         correct_answer_id: 0,
          answeredId: 2,
          status: 'incorrect' },
        { id: 3,
@@ -61,7 +61,7 @@ const expectedStructure = {
        { id: 8,
          question: 'Integer pede justo lacinia eget tincidunt eget tempus vel pede morbi porttitor lorem id ligula suspendisse ornare consequat lectus in?',
          answers: ['Answer#1', 'Answer#2', 'Answer#3'],
-         correct_answer_id: 3,
+         correct_answer_id: 0,
          answeredId: 0,
          status: 'incorrect' } ] }
 
