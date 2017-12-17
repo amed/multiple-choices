@@ -5,7 +5,7 @@ import Question from './Question'
 import './Examination.css';
 
 class Examination extends Component {
-  state = { currentQuestionIndex: null }
+  state = { currentQuestionIndex: 1 }
 
   startQuiz () {
     this.selectQuestion(1)
@@ -30,16 +30,16 @@ class Examination extends Component {
   render() {
     const {currentQuestionIndex} = this.state
     return (
-      <div className="Examination container m-5">
+      <div className="Examination container m-auto col-lg-10 col-md-12 no-gutters">
         <a href='#' onClick = {() => {this.setState({currentQuestionIndex: 9})}}>Set to 9</a> <br/>
         <a href='#' onClick = {() => {this.setState({currentQuestionIndex: 8})}}>Set to 8</a> <br/>
         <a href='#' onClick = {() => {this.setState({currentQuestionIndex: 1})}}>Set to 1</a> <br/>
         <a href='#' onClick = {() => {this.setState({currentQuestionIndex: null})}}>Set to null</a>
-        <h1 className="p-3">Examination</h1>
+        <h2 className="p-3">Examination</h2>
         {( currentQuestionIndex === null )
           ? ( <Start onClick={() => this.startQuiz()} /> )
           : (currentQuestionIndex <= this.totalQuestionsCount())
-            ? ( <div className='container'>
+            ? ( <div className='container question no-gutters'>
                 <Progess
                   current={currentQuestionIndex}
                   total={this.totalQuestionsCount()} />
