@@ -19,7 +19,7 @@ class Examination extends Component {
   }
   questionFilter (questionIndex) {
     return this.props.questions.filter( (question) => {
-       return question.id == questionIndex
+       return question.id === questionIndex
     })[0]
   }
 
@@ -28,19 +28,25 @@ class Examination extends Component {
   }
 
   render() {
-    console.log( typeof this.props.questions)
     const {currentQuestionIndex} = this.state
     return (
       <div className="Examination container m-5">
+        <a href='#' onClick = {() => {this.setState({currentQuestionIndex: 9})}}>Set to 9</a> <br/>
         <a href='#' onClick = {() => {this.setState({currentQuestionIndex: 8})}}>Set to 8</a> <br/>
         <a href='#' onClick = {() => {this.setState({currentQuestionIndex: 1})}}>Set to 1</a> <br/>
         <a href='#' onClick = {() => {this.setState({currentQuestionIndex: null})}}>Set to null</a>
         <h1 className="p-3">Examination</h1>
         {( currentQuestionIndex === null )
           ? ( <Start onClick={() => this.startQuiz()} /> )
-          : (currentQuestionIndex !== this.totalQuestionsCount())
-            ? ( <Question
-              question={this.questionFilter(currentQuestionIndex)} /> )
+          : (currentQuestionIndex <= this.totalQuestionsCount())
+            ? ( <div className='container'>
+                <Progess
+                  current={currentQuestionIndex}
+                  total={this.totalQuestionsCount()} />
+                  <Question
+                    question = { this.questionFilter(currentQuestionIndex) }
+                    onClick = { () => {this.handleAnswerSelect} } />
+            </div>)
             : ( <End onClick={() => this.restartQuiz()} /> )}
 
 
@@ -59,6 +65,23 @@ const Start = ({onClick}) => {
           START
         </a>
       </p>
+    </div>
+  )
+}
+
+const Progess = ({current, total}) => {
+  const style = () => {
+    return ( {width: `${currentProgressPrecentage()}%`} )
+  }
+  const currentProgressPrecentage = () => {
+    return ( (current * 100 ) / total )
+  }
+  return (
+    <div className="progress">
+      <div
+        className="progress-bar" role="progressbar" style={style()} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        { current } / {   total }
+      </div>
     </div>
   )
 }
