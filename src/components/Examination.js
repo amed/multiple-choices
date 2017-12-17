@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {selectChoice} from '../redux/actions';
 import Question from './Question'
+import { examinationFinalResults as finalResults } from '../utils/functions.js'
 import './Examination.css';
 
 class Examination extends Component {
@@ -11,7 +12,7 @@ class Examination extends Component {
   }
 
   state = {
-    currentQuestionIndex: 1,
+    currentQuestionIndex: null,
     answers: {}
   }
 
@@ -43,14 +44,9 @@ class Examination extends Component {
   }
 
   render () {
-    const {currentQuestionIndex} = this.state
+    const {answers,currentQuestionIndex} = this.state
     return (
       <div className="Examination container m-auto col-lg-10 col-sm-12 no-gutters">
-        <a href='#' onClick = {() => {this.setState({currentQuestionIndex: 9})}}>Set to 9</a> <br/>
-        <a href='#' onClick = {() => {this.setState({currentQuestionIndex: 8})}}>Set to 8</a> <br/>
-        <a href='#' onClick = {() => {this.setState({currentQuestionIndex: 1})}}>Set to 1</a> <br/>
-        <a href='#' onClick = {() => {this.setState({currentQuestionIndex: null})}}>Set to null</a> <br/>
-        <a href='#' onClick={ () => {console.log(this.state)}}> State </a>
         <h1 className="p-3">Examination</h1>
         {( currentQuestionIndex === null )
           ? ( <Start onClick={() => this.startQuiz()} /> )
@@ -64,16 +60,10 @@ class Examination extends Component {
                     onClick = { this.handleAnswerSelect } />
             </div>)
             : ( <End
-                  finalResults={this.finalResults()}
-                  onRestartClick={() => this.restartQuiz()}
-
-
-
-                /> )}
-
-
-
+                  finalResults={finalResults(answers, this.props.questions)}
+                  onRestartClick={() => this.restartQuiz()} /> )}
       </div>
+
     );
   }
 }
@@ -81,12 +71,45 @@ class Examination extends Component {
 const End = ({finalResults, onRestartClick}) => {
   return (
     <div>
-      <p className="py-5">Everything is done! Thanks.</p>
-      <p className="py-5 text-center">
+      <p className="pt-3"></p>
+      <div className="py-5 text-center">
+        <h4><span className="badge badge-success">Correct {finalResults.correctAnswersCount}</span></h4>
+        <h4><span className="badge badge-danger">Incorrect {finalResults.incorrectAnswersCount}</span></h4>
+        <div className='text-left my-5'>
+          {finalResults.questions.map((question, index) => {
+            console.log(question)
+            return (
+              <div key={index} className={'alert' + ( (question.status==='correct') ? ' alert-success' : ' alert-danger' )} role="alert">
+                <h5 className="alert-heading">{question.id}</h5>
+                <p>{question.question}</p>
+                <div className="answers mb-0">
+                  {question.answers.map((answer, index) => {
+                    if (question.status === 'correct') {
+                      return(
+                        <div key={index} className={'btn btn-sm' + ( (index === question.correct_answer_id) ? ' btn-success' : ' btn-secondary' )}>
+                          {answer}
+                        </div>
+                      )
+                    } else {
+                      return(
+                        <div key={index} className={'btn btn-sm' + (
+                          (index === question.correct_answer_id) ? ' btn-success' :  ( (index !== question.answeredId) ? ' btn-secondary' : ' btn-danger' )
+                        )}>
+                          {answer}
+                        </div>
+                      )
+                    }
+
+                  })}
+                </div>
+              </div>
+            )
+          })}
+        </div>
         <a href="#" className="btn btn-lg btn-primary" onClick={ () => {onRestartClick()} }>
-          Restart the quiz
+          Do the quiz again!
         </a>
-      </p>
+      </div>
     </div>
   )
 }

@@ -1,0 +1,12 @@
+.alert {
+  margin: 2rem 0rem
+}
+.alert .answers {
+  opacity: 0.6
+}
+.answers .btn {
+  margin: 0.2rem 0.5rem
+}
+.alert p {
+  margin: 0.2rem 0.4rem
+}
