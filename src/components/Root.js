@@ -5,11 +5,17 @@ import Examination from './Examination'
 import './Root.css';
 
 class Root extends Component {
+  state = {
+    appLoaded: false
+  }
   componentDidMount () {
-    this.props.loadData()
+    if (this.props.loadData()) {
+      this.setState({ appLoaded: true })
+    }
   }
 
   render() {
+    const {appLoaded} = this.state
     return (
       <div className="Root container">
         <header className="Root-header col-12 text-center">
@@ -19,10 +25,10 @@ class Root extends Component {
           </p>
         </header>
         <div className="col-10 mx-auto my-5 bg-danger">
-          <Examination />
+          {appLoaded && (
+            <Examination />
+          )}
         </div>
-        {console.log({props: this.props})}
-        <a href='#' onClick= { () => {console.log(this.props)} }>Test action </a>
       </div>
     );
   }

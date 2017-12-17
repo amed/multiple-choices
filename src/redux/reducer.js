@@ -6,7 +6,7 @@ const appReducer = (state = {}, action) => {
     case LOAD_DATA:
       return {
         ...state,
-        ...action.data
+        questions: action.data
       };
     case SELECT_CHOICE:
       return {
